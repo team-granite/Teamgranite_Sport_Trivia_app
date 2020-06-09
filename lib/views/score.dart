@@ -6,10 +6,10 @@ class Result extends StatefulWidget {
 
   Result(
       {this.score,
-      this.totalQuestion,
-      this.correct,
-      this.incorrect,
-      this.notAttempted});
+        this.totalQuestion,
+        this.correct,
+        this.incorrect,
+        this.notAttempted});
 
   @override
   _ResultState createState() => _ResultState();
@@ -33,67 +33,67 @@ class _ResultState extends State<Result> {
     }
   }
 
-    @override
-    Widget build(BuildContext context) {
-      return SafeArea(
-        child: Scaffold(
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text("$greeting", style: TextStyle( fontSize: 24, fontWeight: FontWeight.w500),),
-                SizedBox(height: 14,),
-                Text(
-                    "You Scored ${widget.score} out of ${widget.totalQuestion * 20}"),
-                Text(
-                    "${widget.correct} Correct, ${widget.incorrect} incorrect &  ${widget.notAttempted} out of ${widget.totalQuestion}", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400 ),),
-                    SizedBox(height: 16,),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuizPlay(),
-                        ));
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 54),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Text(
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("$greeting", style: TextStyle( fontSize: 24, fontWeight: FontWeight.w500),),
+              SizedBox(height: 14,),
+              Text(
+                  "You Scored ${widget.score} out of ${widget.totalQuestion * 20}"),
+              Text(
+                "${widget.correct} Correct, ${widget.incorrect} incorrect &  ${widget.notAttempted} out of ${widget.totalQuestion} not attempted", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400 ),),
+              SizedBox(height: 16,),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuizPlay(),
+                      ));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 54),
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: Text(
                       "Replay Quiz Now",
                       style: TextStyle(color: Colors.white, fontSize: 18)
-                    ),
                   ),
                 ),
-                SizedBox(height: 20,),
-                 InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuizPlay(),
-                        ));
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 54),
-                    decoration: BoxDecoration(
+              ),
+              SizedBox(height: 20,),
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => QuizPlay(),
+                      ));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 54),
+                  decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(color: Colors.blue, width: 2)
-                    ),
-                    child: Text(
-                      "Go to home",
-                      style: TextStyle(color: Colors.blue),
-                    ),
                   ),
-                )
-              ],
-            ),
+                  child: Text(
+                    "Go to home",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
+  }
 }
