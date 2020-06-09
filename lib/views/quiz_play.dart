@@ -1,6 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:convert';
+
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:sport_trivia_app/data/data.dart';
+// import 'package:sport_trivia_app/data/data.dart';
 import 'package:sport_trivia_app/model/questionModel.dart';
 import 'package:sport_trivia_app/views/score.dart';
 
@@ -11,19 +15,44 @@ class QuizPlay extends StatefulWidget {
 
 class _QuizPlayState extends State<QuizPlay>
     with SingleTickerProviderStateMixin {
+
+
   Animation animation;
   AnimationController animationController;
+static const String url = "https://opentdb.com/api.php?amount=10&category=21&type=boolean";
 
-  List<QuestionModel> _questions = List<QuestionModel>();
+
+  List<QuestionModel> _questions = [];
+  var loading = false;
+
+  Future<Null> _fetchQuestions() async {
+    setState(() {
+      loading = true;
+    });
+
+    final response = await http.get(url);
+    if (response.statusCode == 200){
+Iterable<dynamic> data = jsonDecode(response.body);
+      print(data);
+      setState(() {
+        for (Map i in data){
+          _questions.add(QuestionModel.fromJson(i));
+        }
+        loading = false;
+      });
+    }
+  }
+
   int index = 0;
   int correct = 0, incorrect = 0, notAttempted = 0, points = 0;
   double beginAnim = 0.0;
   double endAnim = 1.0;
 
+  
   @override
   void initState() {
     super.initState();
-    _questions = getQuestion();
+    _fetchQuestions();
 
     animationController =
         AnimationController(duration: const Duration(seconds: 15), vsync: this)
@@ -110,7 +139,7 @@ class _QuizPlayState extends State<QuizPlay>
                 SizedBox(
                   height: 40,
                 ),
-                Text("${_questions[index].getQuestion()}?",
+                Text("${_questions[index].results.question}?",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
@@ -121,9 +150,9 @@ class _QuizPlayState extends State<QuizPlay>
                 LinearProgressIndicator(
                   value: animation.value,
                 ),
-                CachedNetworkImage(
-                  imageUrl: _questions[index].getImageUrl(),
-                ),
+                // CachedNetworkImage(
+                //   imageUrl: _questions[index].getImageUrl(),
+                // ),
                 Spacer(),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 30),
@@ -132,7 +161,7 @@ class _QuizPlayState extends State<QuizPlay>
                       Expanded(
                         child: InkWell(
                             onTap: () {
-                              if (_questions[index].getAnswer() == "True") {
+                              if (_questions[index].results.correct_answer == "True") {
                                 setState(() {
                                   points += 20;
                                 });
@@ -171,7 +200,7 @@ class _QuizPlayState extends State<QuizPlay>
                       Expanded(
                         child: InkWell(
                           onTap: () {
-                            if (_questions[index].getAnswer() == "False") {
+                            if (_questions[index].results.correct_answer == "False") {
                               setState(() {
                                 points += 20;
                               });
