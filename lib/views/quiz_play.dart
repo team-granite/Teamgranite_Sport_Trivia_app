@@ -58,7 +58,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
 
     animationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
-        if (index < _questions.length - 1) {
+        if (index != _questions.length - 1 ) {
           setState(() {
             index++;
             notAttempted++;
@@ -66,6 +66,9 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
           resetAnim();
           startAnim();
         } else {
+          setState(() {
+            notAttempted++;
+          });
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -162,7 +165,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                           onTap: () {
                             if (_questions[index].correct_answer == "True") {
                               setState(() {
-                                points += 20;
+                                points += 10;
                                 correct++;
                               });
                               index++;
@@ -176,7 +179,6 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                               }
                             } else {
                               setState(() {
-                                points -= 5;
                                 incorrect++;
                               });
                               index++;
@@ -209,7 +211,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                         onTap: () {
                           if (_questions[index].correct_answer == "False") {
                             setState(() {
-                              points += 20;
+                              points += 10;
                               correct++;
                             });
                             index++;
@@ -223,7 +225,6 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                             }
                           } else {
                             setState(() {
-                              points -= 5;
                               incorrect++;
                             });
                             index++;
