@@ -70,7 +70,7 @@ class _ResultState extends State<Result> {
                   ),
                 ),
               ),
-              SizedBox(height: 24,),
+              SizedBox(height: 20,),
               InkWell(
                 onTap: () {
                   Navigator.pushReplacement(
@@ -91,10 +91,10 @@ class _ResultState extends State<Result> {
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 24,),
               InkWell(
                 onTap: () {
-                  Share.share("I scored ${widget.score} over ${widget.totalQuestion * 20} in the fun Sports Trivia App,\n Think you can do better, Join me ");
+                  Share.share("I scored ${widget.score} over ${widget.totalQuestion * 20} in the fun Sports Trivia App,\n Think you can do better? Join me ");
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 54),
@@ -103,7 +103,7 @@ class _ResultState extends State<Result> {
                       border: Border.all(color: Colors.blue, width: 2)
                   ),
                   child: Text(
-                    "Share your Score",
+                    "Share Score",
                     style: TextStyle(color: Colors.blue),
                   ),
                 ),
