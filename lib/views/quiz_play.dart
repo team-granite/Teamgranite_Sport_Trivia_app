@@ -258,7 +258,10 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CircularProgressIndicator(),
-                Text('Loading questions...'),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text('Loading questions...'),
+                ),
               ],
             ),
           ),
