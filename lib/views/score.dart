@@ -46,13 +46,15 @@ class _ResultState extends State<Result> {
     percentageInDecimal = widget.score / (widget.totalQuestion * 10);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xff071a35),
+        
         key: _scaffoldKey,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               children: [
-                Center(child: Text(greeting,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),),
+                Center(child: Text(greeting,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color:Colors.white ),),),
                 CircularPercentIndicator(
                   radius: MediaQuery.of(context).size.width / 2,
                   animation: true,
@@ -61,7 +63,7 @@ class _ResultState extends State<Result> {
                   percent: percentageInDecimal,
                   center: Text(
                     '${(percentageInDecimal * 100).floor()} %',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color:Colors.white),
                   ),
                   circularStrokeCap: CircularStrokeCap.round,
                   linearGradient: LinearGradient(colors: [Colors.blue, Colors.orange, Colors.green]),
@@ -71,7 +73,7 @@ class _ResultState extends State<Result> {
                   child: Center(
                       child: Text(
                     'Your results are:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold, color:Colors.white),
                   )),
                 ),
                 IntrinsicHeight(
@@ -118,9 +120,9 @@ class _ResultState extends State<Result> {
                 ListTile(
                     title: Text(
                       'Share Score',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold, color:Colors.white),
                     ),
-                    subtitle: Text('Share your result with your friends to let them know your score'),
+                    subtitle: Text('Share your result with your friends to let them know your score', style: TextStyle(color: Colors.white),),
                     trailing: Icon(
                       Icons.share,
                       color: Colors.blue,
@@ -138,7 +140,7 @@ class _ResultState extends State<Result> {
                 ListTile(
                   title: Text(
                     'High Score',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold, color:Colors.white),
                   ),
                   subtitle: Text(highScore),
                 ),
@@ -228,7 +230,7 @@ class _ResultState extends State<Result> {
             right: 16,
             child: Text(
               ' $valueReported / $total',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color:Colors.white),
             ),
           ),
           Positioned(

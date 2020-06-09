@@ -119,6 +119,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xff071a35),
         body: Container(
           padding: EdgeInsets.symmetric(vertical: 80),
           child: _questions.isNotEmpty
@@ -128,17 +129,17 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                 padding: EdgeInsets.symmetric(horizontal: 30),
                 child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
                   Text("${index + 1}/${_questions.length}",
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,  color: Colors.white)),
                   SizedBox(
                     width: 8,
                   ),
-                  Text("Question", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400)),
+                  Text("Question", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: Colors.white)),
                   Spacer(),
-                  Text("$points", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  Text("$points", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,  color: Colors.white)),
                   SizedBox(
                     width: 8,
                   ),
-                  Text("Points", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400)),
+                  Text("Points", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400,  color: Colors.white)),
                 ]),
               ),
               SizedBox(
@@ -148,6 +149,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
+                     color: Colors.white
                   )),
               SizedBox(
                 height: 20,
@@ -261,7 +263,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                 CircularProgressIndicator(),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text('Loading questions...'),
+                  child: Text('Needs Intenet Connection, Loading questions...'),
                 ),
               ],
             ),
