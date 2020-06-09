@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 import 'package:sport_trivia_app/views/quiz_play.dart';
 
 class Result extends StatefulWidget {
@@ -89,6 +90,23 @@ class _ResultState extends State<Result> {
                     style: TextStyle(color: Colors.blue),
                   ),
                 ),
+              ),
+              SizedBox(height: 24,),
+              InkWell(
+                onTap: () {
+                  Share.share("I scored ${widget.score} over ${widget.totalQuestion * 20} in the fun Sports Trivia App,\n Think you can do better? Join me ");
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 54),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: Colors.blue, width: 2)
+                  ),
+                  child: Text(
+                    "Share Score",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
               )
             ],
           ),
@@ -96,4 +114,6 @@ class _ResultState extends State<Result> {
       ),
     );
   }
+
+  void share(BuildContext context, $, Set<int> set) {}
 }
