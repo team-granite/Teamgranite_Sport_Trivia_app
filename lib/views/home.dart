@@ -57,13 +57,15 @@ class HomePage extends StatelessWidget {
         context,
           Text(
               "No Connection",
+
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 14.0,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,
                   fontFamily: "fonts/BalsamiqSans-Bold.ttf"
-              )
+              ),
+            textAlign: TextAlign.center,
           ),
           Text(
             "Oops, You do not have internet connection. \n\nClick reload to try again",
@@ -73,6 +75,7 @@ class HomePage extends StatelessWidget {
                 letterSpacing: 2.0,
                 fontFamily: "fonts/BalsamiqSans-Bold.ttf"
             ),
+            textAlign: TextAlign.center,
           )
       );
     }else{
