@@ -147,7 +147,7 @@ class _ResultState extends State<Result> {
                     ),
                     onTap: () {
                       Share.share(
-                          "I scored ${widget.score} over ${widget.totalQuestion * 20} in the fun Sports Trivia App,\n Think you can do better? Join me ");
+                          "I scored ${widget.score} over ${widget.totalQuestion * 10} in the fun Sports Trivia App,\n Think you can do better? Join me ");
                     }),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
