@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sport_trivia_app/model/questionModel.dart';
@@ -58,7 +59,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
 
     animationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
-        if (index != _questions.length - 1 ) {
+        if (index < _questions.length - 1) {
           setState(() {
             index++;
             notAttempted++;
@@ -66,9 +67,6 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
           resetAnim();
           startAnim();
         } else {
-          setState(() {
-            notAttempted++;
-          });
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -119,27 +117,63 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xff071a35),
+        appBar: AppBar(
+          title: RichText(
+            text: TextSpan(
+              text: 'Sports',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 25.0
+              ),
+              children: <TextSpan>[
+                TextSpan(
+                  text: 'Trivia', style: TextStyle(
+                    color: Colors.deepOrange,
+                    fontSize: 25.0
+                    )
+                  )
+              ],
+            ),
+            ),
+          centerTitle: true,
+          elevation: 0.0,
+          backgroundColor: Color(0xff071a35),
+        ),
         body: Container(
-          padding: EdgeInsets.symmetric(vertical: 80),
+          decoration: BoxDecoration(
+            color: Color(0xff071a35),
+            boxShadow: [
+                BoxShadow(
+                  color: Colors.grey[200],
+                  blurRadius: 2.0, // has the effect of softening the shadow
+                  spreadRadius: 2.0, // has the effect of extending the shadow
+                  offset: Offset(
+                    5.0, // horizontal, move right 10
+                    5.0, // vertical, move down 10
+                  ),
+                )
+              ],    
+              ),
+          
+          padding: EdgeInsets.symmetric(vertical: 60, horizontal: 15.0),
           child: _questions.isNotEmpty
               ? Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
                   Text("${index + 1}/${_questions.length}",
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,  color: Colors.white)),
+                      style: TextStyle(color: Colors.white,fontSize: 24, fontWeight: FontWeight.bold)),
                   SizedBox(
                     width: 8,
                   ),
-                  Text("Question", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: Colors.white)),
+                  Text("Question", style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400)),
                   Spacer(),
-                  Text("$points", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,  color: Colors.white)),
+                  Text("$points", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
                   SizedBox(
                     width: 8,
                   ),
-                  Text("Points", style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400,  color: Colors.white)),
+                  Text("Points", style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400)),
                 ]),
               ),
               SizedBox(
@@ -147,9 +181,9 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
               ),
               if(!isLastQuestion()) Text("${_questions[index].question}?",
                   style: TextStyle(
+                    color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                     color: Colors.white
+                    fontSize: 22.0,
                   )),
               SizedBox(
                 height: 20,
@@ -167,7 +201,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                           onTap: () {
                             if (_questions[index].correct_answer == "True") {
                               setState(() {
-                                points += 10;
+                                points += 20;
                                 correct++;
                               });
                               index++;
@@ -181,6 +215,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                               }
                             } else {
                               setState(() {
+                                points -= 5;
                                 incorrect++;
                               });
                               index++;
@@ -195,6 +230,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                             }
                           },
                           child: Container(
+                            
                             padding: EdgeInsets.symmetric(vertical: 12),
                             alignment: Alignment.center,
                             child: Text(
@@ -213,7 +249,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                         onTap: () {
                           if (_questions[index].correct_answer == "False") {
                             setState(() {
-                              points += 10;
+                              points += 20;
                               correct++;
                             });
                             index++;
@@ -227,6 +263,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                             }
                           } else {
                             setState(() {
+                              points -= 5;
                               incorrect++;
                             });
                             index++;
@@ -263,7 +300,13 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                 CircularProgressIndicator(),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text('Needs Intenet Connection, Loading questions...'),
+                  child: Text(
+                    'Loading questions...', 
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22.0
+                    ),
+                  ),
                 ),
               ],
             ),

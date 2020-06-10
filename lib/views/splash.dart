@@ -15,11 +15,11 @@ Widget build(BuildContext context) {
       seconds: 5,
       backgroundColor: Color(0xff071a35),
       navigateAfterSeconds: HomePage(),
-      title: Text('SportTrivia',
+      title: Text('SportsTrivia',
         style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-            color: Colors.red
+            fontSize: 30.0,
+            color: Colors.deepOrange
         ),),
 
       image: Image.asset('image/object.png'),
