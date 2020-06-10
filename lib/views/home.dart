@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
               "No Connection",
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 22.0,
+                  fontSize: 14.0,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,
                   fontFamily: "fonts/BalsamiqSans-Bold.ttf"
@@ -69,39 +69,12 @@ class HomePage extends StatelessWidget {
             "Oops, You do not have internet connection. \n\nClick reload to try again",
             style: TextStyle(
                 color: Colors.white,
-                fontSize: 24.0,
+                fontSize: 16.0,
                 letterSpacing: 2.0,
                 fontFamily: "fonts/BalsamiqSans-Bold.ttf"
             ),
           )
       );
-    }else if (result == ConnectivityResult.wifi){
-      const String url = "https://opentdb.com/api.php?amount=10&category=21&type=boolean";
-      final testresponse = await http.get(url);
-      if (testresponse.statusCode != 200) {
-        _displayDialog(
-            context,
-            Text(
-                "No Connection",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2.0,
-                    fontFamily: "fonts/BalsamiqSans-Bold.ttf"
-                )
-            ),
-            Text(
-              "Oops, You do not have internet connection. \n\nClick reload to try again",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24.0,
-                  letterSpacing: 2.0,
-                  fontFamily: "fonts/BalsamiqSans-Bold.ttf"
-              ),
-            )
-        );
-      }
     }else{
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => QuizPlay()));
