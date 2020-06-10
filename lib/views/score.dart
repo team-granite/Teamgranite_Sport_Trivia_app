@@ -44,7 +44,7 @@ class _ResultState extends State<Result> {
 
   @override
   Widget build(BuildContext context) {
-    percentageInDecimal = widget.score / (widget.totalQuestion * 10);
+    percentageInDecimal = widget.score / (widget.totalQuestion * 20);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xff071a35),
