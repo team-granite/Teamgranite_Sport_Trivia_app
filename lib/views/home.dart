@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
               )
           ),
           Text(
-            "Oops, You do not have internet connection \n Click reload to try again",
+            "Oops, You do not have internet connection. \n\nClick reload to try again",
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 24.0,
@@ -92,7 +92,7 @@ class HomePage extends StatelessWidget {
                 )
             ),
             Text(
-              "Oops, You do not have internet connection \n Click reload to try again",
+              "Oops, You do not have internet connection. \n\nClick reload to try again",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 24.0,
