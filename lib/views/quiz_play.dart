@@ -10,12 +10,10 @@ class QuizPlay extends StatefulWidget {
   _QuizPlayState createState() => _QuizPlayState();
 }
 
-class _QuizPlayState extends State<QuizPlay>
-    with SingleTickerProviderStateMixin {
+class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin {
   Animation animation;
   AnimationController animationController;
-  static const String url =
-      "https://opentdb.com/api.php?amount=10&category=21&type=boolean";
+  static const String url = "https://opentdb.com/api.php?amount=10&category=21&type=boolean";
 
   List<Results> _questions = [];
   var loading = false;
@@ -50,14 +48,12 @@ class _QuizPlayState extends State<QuizPlay>
     super.initState();
     _fetchQuestions();
 
-    animationController =
-        AnimationController(duration: const Duration(seconds: 5), vsync: this)
-          ..addListener(() {
-            setState(() {});
-          });
+    animationController = AnimationController(duration: const Duration(seconds: 7), vsync: this)
+      ..addListener(() {
+        setState(() {});
+      });
 
-    animation =
-        Tween(begin: beginAnim, end: endAnim).animate(animationController);
+    animation = Tween(begin: beginAnim, end: endAnim).animate(animationController);
 
     startAnim();
 
@@ -128,9 +124,7 @@ class _QuizPlayState extends State<QuizPlay>
               text: 'Sports',
               style: TextStyle(color: Colors.white70, fontSize: 25.0),
               children: <TextSpan>[
-                TextSpan(
-                    text: 'Trivia',
-                    style: TextStyle(color: Colors.deepOrange, fontSize: 25.0))
+                TextSpan(text: 'Trivia', style: TextStyle(color: Colors.deepOrange, fontSize: 25.0))
               ],
             ),
           ),
@@ -153,169 +147,156 @@ class _QuizPlayState extends State<QuizPlay>
               )
             ],
           ),
-          padding: EdgeInsets.symmetric(vertical: 60, horizontal: 15.0),
+          padding: EdgeInsets.symmetric(vertical: 50, horizontal: 15.0),
           child: _questions.isNotEmpty
-              ? Column(
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text("${index + 1}/${_questions.length}",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold)),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text("Question",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w400)),
-                            Spacer(),
-                            Text("$points",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold)),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            Text("Points",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w400)),
-                          ]),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    LinearProgressIndicator(
-                      value: animation.value,
-                      backgroundColor: Color(0xFFFF5722),
-                    ),
-                    Spacer(),
-                    if (!isLastQuestion())
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Text("${_questions[index].question}?",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 30.0,
-                            )),
-                      ),
-                    Spacer(),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 30),
+              ?
+              LayoutBuilder(builder: (context, constraints){
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
+                    child: IntrinsicHeight(
                       child: Column(
-                        children: [
-                          InkWell(
-                              onTap: () {
-                                if (_questions[index].correct_answer ==
-                                    "True") {
-                                  setState(() {
-                                    points += 20;
-                                    correct++;
-                                  });
-                                  index++;
-
-                                  if (isLastQuestion()) {
-                                    stopAnim();
-                                    goToResult();
-                                  } else {
-                                    resetAnim();
-                                    startAnim();
-                                  }
-                                } else {
-                                  setState(() {
-                                    points -= 5;
-                                    incorrect++;
-                                  });
-                                  index++;
-
-                                  if (isLastQuestion()) {
-                                    stopAnim();
-                                    goToResult();
-                                  } else {
-                                    resetAnim();
-                                    startAnim();
-                                  }
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 15),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "True",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(24),
-                                    color: Colors.blue),
-                              )),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          InkWell(
-                            onTap: () {
-                              if (_questions[index].correct_answer == "False") {
-                                setState(() {
-                                  points += 10;
-                                  correct++;
-                                });
-                                index++;
-
-                                if (isLastQuestion()) {
-                                  stopAnim();
-                                  goToResult();
-                                } else {
-                                  resetAnim();
-                                  startAnim();
-                                }
-                              } else {
-                                setState(() {
-                                  points -= 5;
-                                  incorrect++;
-                                });
-                                index++;
-
-                                if (isLastQuestion()) {
-                                  stopAnim();
-                                  goToResult();
-                                } else {
-                                  resetAnim();
-                                  startAnim();
-                                }
-                              }
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 12),
-                              alignment: Alignment.center,
-                              child: Text(
-                                "False",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500),
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                              Text("${index + 1}/${_questions.length}",
+                                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                              SizedBox(
+                                width: 8,
                               ),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(24),
-                                  color: Colors.red),
-                            ),
+                              Text("Question",
+                                  style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400)),
+                              Spacer(),
+                              Text("$points",
+                                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text("Points",
+                                  style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400)),
+                            ]),
                           ),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          LinearProgressIndicator(
+                            value: animation.value,
+                            backgroundColor: Color(0xFFFF5722),
+                          ),
+                          Spacer(),
+                          if (!isLastQuestion())
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text("${_questions[index].question}?",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 25.0,
+                                  )),
+                            ),
+                          Spacer(),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 30),
+                            child: Column(
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      if (_questions[index].correct_answer == "True") {
+                                        setState(() {
+                                          points += 10;
+                                          correct++;
+                                        });
+                                        index++;
+
+                                        if (isLastQuestion()) {
+                                          stopAnim();
+                                          goToResult();
+                                        } else {
+                                          resetAnim();
+                                          startAnim();
+                                        }
+                                      } else {
+                                        setState(() {
+                                          incorrect++;
+                                        });
+                                        index++;
+
+                                        if (isLastQuestion()) {
+                                          stopAnim();
+                                          goToResult();
+                                        } else {
+                                          resetAnim();
+                                          startAnim();
+                                        }
+                                      }
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(vertical: 15),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        "True",
+                                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500),
+                                      ),
+                                      decoration:
+                                      BoxDecoration(borderRadius: BorderRadius.circular(24), color: Colors.blue),
+                                    )),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    if (_questions[index].correct_answer == "False") {
+                                      setState(() {
+                                        points += 10;
+                                        correct++;
+                                      });
+                                      index++;
+
+                                      if (isLastQuestion()) {
+                                        stopAnim();
+                                        goToResult();
+                                      } else {
+                                        resetAnim();
+                                        startAnim();
+                                      }
+                                    } else {
+                                      setState(() {
+                                        incorrect++;
+                                      });
+                                      index++;
+
+                                      if (isLastQuestion()) {
+                                        stopAnim();
+                                        goToResult();
+                                      } else {
+                                        resetAnim();
+                                        startAnim();
+                                      }
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 12),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "False",
+                                      style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500),
+                                    ),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                    )
-                  ],
-                )
+                    ),
+                  ),
+                );
+              })
+
+
               : Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

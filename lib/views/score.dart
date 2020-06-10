@@ -24,7 +24,7 @@ class _ResultState extends State<Result> {
   @override
   void initState() {
     super.initState();
-    var percentage = (widget.score / (widget.totalQuestion * 20)) * 100;
+    var percentage = (widget.score / (widget.totalQuestion * 10)) * 100;
     if (percentage >= 90) {
       greeting = "Outstanding!";
     } else if (percentage > 80 && percentage < 90) {
@@ -44,7 +44,7 @@ class _ResultState extends State<Result> {
 
   @override
   Widget build(BuildContext context) {
-    percentageInDecimal = widget.score / (widget.totalQuestion * 20);
+    percentageInDecimal = widget.score / (widget.totalQuestion * 10);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xff071a35),
@@ -91,6 +91,8 @@ class _ResultState extends State<Result> {
                           category: 'Correct'),
                       VerticalDivider(
                         thickness: 1,
+                    color: Colors.white.withOpacity(0.5),
+
                       ),
                       resultSummary(
                           context: context,
@@ -102,6 +104,8 @@ class _ResultState extends State<Result> {
                           ),
                       VerticalDivider(
                         thickness: 1,
+                    color: Colors.white.withOpacity(0.5),
+
                       ),
                       resultSummary(
                           context: context,
@@ -117,6 +121,8 @@ class _ResultState extends State<Result> {
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
                     thickness: 1,
+                    color: Colors.white.withOpacity(0.5),
+
                   ),
                 ),
                 ListTile(
@@ -137,6 +143,8 @@ class _ResultState extends State<Result> {
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
                     thickness: 1,
+                    color: Colors.white.withOpacity(0.5),
+
                   ),
                 ),
                 ListTile(
@@ -146,12 +154,8 @@ class _ResultState extends State<Result> {
                   ),
                   subtitle: Text(highScore, style: TextStyle(color: Colors.white),),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Divider(
-                    thickness: 1,
-                  ),
-                ),
+                SizedBox(height: 8,),
+               
                 InkWell(
                   onTap: () {
                     Navigator.pushReplacement(
@@ -172,12 +176,7 @@ class _ResultState extends State<Result> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Divider(
-                    thickness: 1,
-                  ),
-                ),
+                SizedBox(height: 16),
                 InkWell(
                   onTap: () {
                     Navigator.pushReplacement(
