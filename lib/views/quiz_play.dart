@@ -63,6 +63,11 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
       });
       startAnim();
     }
+    else{
+      setState(() {
+        isNetworkTimeOut = true;
+      });
+    }
   }
 
   int index = 0;
@@ -113,13 +118,6 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
         }
       }
     });
-  }
-
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    //startCountDownTimer(context);
   }
 
   resetAnim() {
@@ -344,7 +342,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     'Connection to server timed out.',
-                    style: TextStyle(color: Colors.white, fontSize: 22.0),
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),textAlign: TextAlign.center,
                   ),
                 ),
                 RaisedButton(
