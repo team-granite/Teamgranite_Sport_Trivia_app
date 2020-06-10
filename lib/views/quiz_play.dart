@@ -153,7 +153,7 @@ class _QuizPlayState extends State<QuizPlay>
               )
             ],
           ),
-          padding: EdgeInsets.symmetric(vertical: 60, horizontal: 15.0),
+          padding: EdgeInsets.symmetric(vertical: 50, horizontal: 15.0),
           child: _questions.isNotEmpty
               ? Column(
                   children: <Widget>[
@@ -201,12 +201,12 @@ class _QuizPlayState extends State<QuizPlay>
                     Spacer(),
                     if (!isLastQuestion())
                       Padding(
-                        padding: const EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Text("${_questions[index].question}?",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
-                              fontSize: 30.0,
+                              fontSize: 25.0,
                             )),
                       ),
                     Spacer(),
@@ -290,6 +290,7 @@ class _QuizPlayState extends State<QuizPlay>
                                 if (isLastQuestion()) {
                                   stopAnim();
                                   goToResult();
+
                                 } else {
                                   resetAnim();
                                   startAnim();
