@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/html_parser.dart';
+import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:sport_trivia_app/model/questionModel.dart';
 import 'package:sport_trivia_app/views/score.dart';
@@ -188,21 +187,9 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                             backgroundColor: Color(0xFFFF5722),
                           ),
                           Spacer(),
-                          /*if (!isLastQuestion())
                             Padding(
                               padding: const EdgeInsets.all(12.0),
-                              child: Text("${_questions[index].question}?",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 25.0,
-                                  )),
-                            ),
-                          */
-                          if (!isLastQuestion())
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text("${_questions[index].question}?",
+                              child: Text('${getQuestion(_questions[index].question)}?',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w600,
@@ -330,5 +317,11 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
         ),
       ),
     );
+  }
+
+  String getQuestion(String htmlString) {
+    var htmlDocument = parse(htmlString);
+    String parsedString = parse(htmlDocument.body.text).documentElement.text;
+    return parsedString.replaceAll('.', '');
   }
 }
