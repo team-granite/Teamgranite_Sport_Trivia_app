@@ -71,6 +71,7 @@ class _QuizPlayState extends State<QuizPlay>
           resetAnim();
           startAnim();
         } else {
+          notAttempted++;
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
