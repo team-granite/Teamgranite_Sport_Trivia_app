@@ -91,6 +91,8 @@ class _ResultState extends State<Result> {
                           category: 'Correct'),
                       VerticalDivider(
                         thickness: 1,
+                    color: Colors.white,
+
                       ),
                       resultSummary(
                           context: context,
@@ -102,6 +104,8 @@ class _ResultState extends State<Result> {
                           ),
                       VerticalDivider(
                         thickness: 1,
+                    color: Colors.white,
+
                       ),
                       resultSummary(
                           context: context,
@@ -117,6 +121,8 @@ class _ResultState extends State<Result> {
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
                     thickness: 1,
+                    color: Colors.white,
+
                   ),
                 ),
                 ListTile(
@@ -137,6 +143,8 @@ class _ResultState extends State<Result> {
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
                     thickness: 1,
+                    color: Colors.white,
+
                   ),
                 ),
                 ListTile(
@@ -150,6 +158,8 @@ class _ResultState extends State<Result> {
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
                     thickness: 1,
+                    color: Colors.white,
+
                   ),
                 ),
                 InkWell(
@@ -176,6 +186,7 @@ class _ResultState extends State<Result> {
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
                     thickness: 1,
+                    color: Colors.white,
                   ),
                 ),
                 InkWell(
