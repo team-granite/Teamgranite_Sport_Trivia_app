@@ -27,6 +27,7 @@ dependencies:
   share: ^0.6.4+3
   percent_indicator: ^2.1.4
   shared_preferences: ^0.5.4+5
+  html: ^0.14.0+3
   splashscreen:
 
 
