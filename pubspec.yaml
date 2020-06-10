@@ -28,7 +28,9 @@ dependencies:
   percent_indicator: ^2.1.4
   shared_preferences: ^0.5.4+5
   html: ^0.14.0+3
+  connectivity: ^0.4.8+6
   splashscreen:
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -76,10 +78,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Balamiq
+      fonts:
+        - asset: fonts/BalsamiqSans-Bold.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
