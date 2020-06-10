@@ -51,7 +51,7 @@ class _QuizPlayState extends State<QuizPlay>
     _fetchQuestions();
 
     animationController =
-        AnimationController(duration: const Duration(seconds: 8), vsync: this)
+        AnimationController(duration: const Duration(seconds: 7), vsync: this)
           ..addListener(() {
             setState(() {});
           });
@@ -138,202 +138,200 @@ class _QuizPlayState extends State<QuizPlay>
           elevation: 0.0,
           backgroundColor: Color(0xff071a35),
         ),
-        body: SingleChildScrollView(
-                  child: Container(
+        body: Container(
             decoration: BoxDecoration(
               color: Color(0xff071a35),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey[200],
-                  blurRadius: 2.0, // has the effect of softening the shadow
-                  spreadRadius: 2.0, // has the effect of extending the shadow
-                  offset: Offset(
-                    5.0, // horizontal, move right 10
-                    5.0, // vertical, move down 10
-                  ),
+        color: Colors.grey[200],
+        blurRadius: 2.0, // has the effect of softening the shadow
+        spreadRadius: 2.0, // has the effect of extending the shadow
+        offset: Offset(
+          5.0, // horizontal, move right 10
+          5.0, // vertical, move down 10
+        ),
                 )
               ],
             ),
             padding: EdgeInsets.symmetric(vertical: 60, horizontal: 15.0),
             child: _questions.isNotEmpty
                 ? Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text("${index + 1}/${_questions.length}",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text("Question",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w400)),
-                              Spacer(),
-                              Text("$points",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text("Points",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w400)),
-                            ]),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      LinearProgressIndicator(
-                        value: animation.value,
-                        backgroundColor: Color(0xFFFF5722),
-                      ),
-                      Spacer(),
-                      if (!isLastQuestion())
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text("${_questions[index].question}?",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 25.0,
-                              )),
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text("${index + 1}/${_questions.length}",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text("Question",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400)),
+                    Spacer(),
+                    Text("$points",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text("Points",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400)),
+                  ]),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            LinearProgressIndicator(
+              value: animation.value,
+              backgroundColor: Color(0xFFFF5722),
+            ),
+            Spacer(),
+            if (!isLastQuestion())
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text("${_questions[index].question}?",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 25.0,
+                    )),
+              ),
+            Spacer(),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                children: [
+                  InkWell(
+                      onTap: () {
+                        if (_questions[index].correct_answer ==
+                            "True") {
+                          setState(() {
+                            points += 20;
+                            correct++;
+                          });
+                          index++;
+
+                          if (isLastQuestion()) {
+                            stopAnim();
+                            goToResult();
+                          } else {
+                            resetAnim();
+                            startAnim();
+                          }
+                        } else {
+                          setState(() {
+                            points -= 5;
+                            incorrect++;
+                          });
+                          index++;
+
+                          if (isLastQuestion()) {
+                            stopAnim();
+                            goToResult();
+                          } else {
+                            resetAnim();
+                            startAnim();
+                          }
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "True",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500),
                         ),
-                      Spacer(),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 30),
-                        child: Column(
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  if (_questions[index].correct_answer ==
-                                      "True") {
-                                    setState(() {
-                                      points += 20;
-                                      correct++;
-                                    });
-                                    index++;
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24),
+                            color: Colors.blue),
+                      )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  InkWell(
+                    onTap: () {
+                      if (_questions[index].correct_answer == "False") {
+                        setState(() {
+                          points += 10;
+                          correct++;
+                        });
+                        index++;
 
-                                    if (isLastQuestion()) {
-                                      stopAnim();
-                                      goToResult();
-                                    } else {
-                                      resetAnim();
-                                      startAnim();
-                                    }
-                                  } else {
-                                    setState(() {
-                                      points -= 5;
-                                      incorrect++;
-                                    });
-                                    index++;
+                        if (isLastQuestion()) {
+                          stopAnim();
+                          goToResult();
+                        } else {
+                          resetAnim();
+                          startAnim();
+                        }
+                      } else {
+                        setState(() {
+                          points -= 5;
+                          incorrect++;
+                        });
+                        index++;
 
-                                    if (isLastQuestion()) {
-                                      stopAnim();
-                                      goToResult();
-                                    } else {
-                                      resetAnim();
-                                      startAnim();
-                                    }
-                                  }
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 15),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "True",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(24),
-                                      color: Colors.blue),
-                                )),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if (_questions[index].correct_answer == "False") {
-                                  setState(() {
-                                    points += 10;
-                                    correct++;
-                                  });
-                                  index++;
-
-                                  if (isLastQuestion()) {
-                                    stopAnim();
-                                    goToResult();
-                                  } else {
-                                    resetAnim();
-                                    startAnim();
-                                  }
-                                } else {
-                                  setState(() {
-                                    points -= 5;
-                                    incorrect++;
-                                  });
-                                  index++;
-
-                                  if (isLastQuestion()) {
-                                    stopAnim();
-                                    goToResult();
-                                  } else {
-                                    resetAnim();
-                                    startAnim();
-                                  }
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 12),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "False",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(24),
-                                    color: Colors.red),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                : Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(),
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text(
-                            'Loading questions...',
-                            style: TextStyle(color: Colors.white, fontSize: 22.0),
-                          ),
-                        ),
-                      ],
+                        if (isLastQuestion()) {
+                          stopAnim();
+                          goToResult();
+                        } else {
+                          resetAnim();
+                          startAnim();
+                        }
+                      }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "False",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24),
+                          color: Colors.red),
                     ),
                   ),
+                ],
+              ),
+            )
+          ],
+        )
+                : Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Loading questions...',
+                  style: TextStyle(color: Colors.white, fontSize: 22.0),
+                ),
+              ),
+            ],
           ),
         ),
+          ),
       ),
     );
   }
