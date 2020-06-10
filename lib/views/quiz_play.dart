@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/html_parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:sport_trivia_app/model/questionModel.dart';
 import 'package:sport_trivia_app/views/score.dart';
@@ -97,7 +99,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
   }
 
   bool isLastQuestion() {
-    return (_questions.length-1 == index);
+    return (_questions.length  == index);
   }
 
   void goToResult() {
@@ -155,7 +157,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                   child: ConstrainedBox(
                     constraints: BoxConstraints(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
                     child: IntrinsicHeight(
-                      child: Column(
+                      child: (!isLastQuestion()) ? Column(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           Container(
@@ -186,6 +188,17 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                             backgroundColor: Color(0xFFFF5722),
                           ),
                           Spacer(),
+                          /*if (!isLastQuestion())
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text("${_questions[index].question}?",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 25.0,
+                                  )),
+                            ),
+                          */
                           if (!isLastQuestion())
                             Padding(
                               padding: const EdgeInsets.all(12.0),
@@ -292,7 +305,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                             ),
                           )
                         ],
-                      ),
+                      ) : Center( child: Text(' '),),
                     ),
                   ),
                 );
