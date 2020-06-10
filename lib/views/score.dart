@@ -131,7 +131,7 @@ class _ResultState extends State<Result> {
                     ),
                     onTap: () {
                       Share.share(
-                          "I scored ${widget.score} over ${widget.totalQuestion * 10} in the fun Sports Trivia App,\n Think you can do better? Join me ");
+                          "I scored ${widget.score} over ${widget.totalQuestion * 20} in the fun Sports Trivia App,\n Think you can do better? Join me ");
                     }),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -230,7 +230,7 @@ class _ResultState extends State<Result> {
           ),
           Positioned(
             top: 8,
-            right: 16,
+            right: 10,
             child: Text(
               ' $valueReported / $total',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color:Colors.white),
@@ -252,7 +252,10 @@ class _ResultState extends State<Result> {
     if (prefs.containsKey('highScore')) {
       if (widget.score > currentHighScore) {
         prefs.setInt('highScore', widget.score);
-        _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Congratulations, new high score!')));
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text('Congratulations, new high score!'),
+          elevation: 10.0,
+        ));
         setState(() {
           highScore = widget.score.toString();
         });
