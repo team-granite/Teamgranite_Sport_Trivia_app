@@ -3,6 +3,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sport_trivia_app/views/home.dart';
 import 'package:sport_trivia_app/views/quiz_play.dart';
 
 class Result extends StatefulWidget {
@@ -97,7 +98,8 @@ class _ResultState extends State<Result> {
                           iconColor: Colors.blue,
                           valueReported: widget.notAttempted,
                           total: widget.totalQuestion,
-                          category: 'Skipped'),
+                          category: 'Skipped',
+                          ),
                       VerticalDivider(
                         thickness: 1,
                       ),
@@ -142,7 +144,7 @@ class _ResultState extends State<Result> {
                     'High Score',
                     style: TextStyle(fontWeight: FontWeight.bold, color:Colors.white),
                   ),
-                  subtitle: Text(highScore),
+                  subtitle: Text(highScore, style: TextStyle(color: Colors.white),),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -155,17 +157,17 @@ class _ResultState extends State<Result> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => QuizPlay(),
+                          builder: (context) => HomePage(),
                         ));
                   },
                   child: Center(
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 54),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.blue, width: 2)),
+                          borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.deepOrange, width: 2)),
                       child: Text(
                         "Go home",
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(color: Colors.deepOrange),
                       ),
                     ),
                   ),
@@ -188,7 +190,7 @@ class _ResultState extends State<Result> {
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 54),
                       decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Colors.deepOrange,
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Text("Restart", style: TextStyle(color: Colors.white, fontSize: 18)),
@@ -209,7 +211,8 @@ class _ResultState extends State<Result> {
       @required Color iconColor,
       @required int valueReported,
       @required int total,
-      @required String category}) {
+      @required String category,
+      }) {
     return Container(
       width: MediaQuery.of(context).size.width / 5,
       height: MediaQuery.of(context).size.width / 7,
@@ -236,7 +239,7 @@ class _ResultState extends State<Result> {
           Positioned(
             left: 12,
             bottom: 8,
-            child: Text(category),
+            child: Text(category, style: TextStyle(color: Colors.white),),
           )
         ],
       ),
