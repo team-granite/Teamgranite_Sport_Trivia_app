@@ -97,7 +97,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
   }
 
   bool isLastQuestion() {
-    return (_questions.length == index);
+    return (_questions.length-1 == index);
   }
 
   void goToResult() {
@@ -219,6 +219,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                                         }
                                       } else {
                                         setState(() {
+                                          points = points - 5;
                                           incorrect++;
                                         });
                                         index++;
@@ -263,6 +264,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
                                       }
                                     } else {
                                       setState(() {
+                                        points = points - 5;
                                         incorrect++;
                                       });
                                       index++;
