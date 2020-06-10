@@ -24,7 +24,7 @@ class _ResultState extends State<Result> {
   @override
   void initState() {
     super.initState();
-    var percentage = (widget.score / (widget.totalQuestion * 20)) * 100;
+    var percentage = (widget.score / (widget.totalQuestion * 10)) * 100;
     if (percentage >= 90) {
       greeting = "Outstanding!";
     } else if (percentage > 80 && percentage < 90) {
@@ -44,7 +44,7 @@ class _ResultState extends State<Result> {
 
   @override
   Widget build(BuildContext context) {
-    percentageInDecimal = widget.score / (widget.totalQuestion * 20);
+    percentageInDecimal = widget.score / (widget.totalQuestion * 10);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xff071a35),
