@@ -91,7 +91,7 @@ class _ResultState extends State<Result> {
                           category: 'Correct'),
                       VerticalDivider(
                         thickness: 1,
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.5),
 
                       ),
                       resultSummary(
@@ -104,7 +104,7 @@ class _ResultState extends State<Result> {
                           ),
                       VerticalDivider(
                         thickness: 1,
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.5),
 
                       ),
                       resultSummary(
@@ -121,7 +121,7 @@ class _ResultState extends State<Result> {
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
                     thickness: 1,
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.5),
 
                   ),
                 ),
@@ -143,7 +143,7 @@ class _ResultState extends State<Result> {
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
                     thickness: 1,
-                    color: Colors.white,
+                    color: Colors.white.withOpacity(0.5),
 
                   ),
                 ),
@@ -154,14 +154,8 @@ class _ResultState extends State<Result> {
                   ),
                   subtitle: Text(highScore, style: TextStyle(color: Colors.white),),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.white,
-
-                  ),
-                ),
+                SizedBox(height: 8,),
+               
                 InkWell(
                   onTap: () {
                     Navigator.pushReplacement(
@@ -182,13 +176,7 @@ class _ResultState extends State<Result> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Divider(
-                    thickness: 1,
-                    color: Colors.white,
-                  ),
-                ),
+                SizedBox(height: 16),
                 InkWell(
                   onTap: () {
                     Navigator.pushReplacement(
