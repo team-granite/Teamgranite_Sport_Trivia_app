@@ -19,6 +19,7 @@ class _ResultState extends State<Result> {
   String greeting = "";
   double percentageInDecimal;
   String highScore = '';
+  int pointsScored = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -39,23 +40,32 @@ class _ResultState extends State<Result> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    if (widget.score > 0) {
+      setState(() {
+        pointsScored = widget.score;
+      });
+    }
     getHighScore();
   }
 
   @override
   Widget build(BuildContext context) {
-    percentageInDecimal = widget.score / (widget.totalQuestion * 10);
+    percentageInDecimal = pointsScored / (widget.totalQuestion * 10);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xff071a35),
-        
         key: _scaffoldKey,
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListView(
               children: [
-                Center(child: Text(greeting,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color:Colors.white ),),),
+                Center(
+                  child: Text(
+                    greeting,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.white),
+                  ),
+                ),
                 CircularPercentIndicator(
                   radius: MediaQuery.of(context).size.width / 2,
                   animation: true,
@@ -64,7 +74,7 @@ class _ResultState extends State<Result> {
                   percent: percentageInDecimal,
                   center: Text(
                     '${(percentageInDecimal * 100).floor()} %',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color:Colors.white),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.white),
                   ),
                   circularStrokeCap: CircularStrokeCap.round,
                   linearGradient: LinearGradient(colors: [Colors.blue, Colors.orange, Colors.green]),
@@ -74,7 +84,7 @@ class _ResultState extends State<Result> {
                   child: Center(
                       child: Text(
                     'Your results are:',
-                    style: TextStyle(fontWeight: FontWeight.bold, color:Colors.white),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                   )),
                 ),
                 IntrinsicHeight(
@@ -91,21 +101,19 @@ class _ResultState extends State<Result> {
                           category: 'Correct'),
                       VerticalDivider(
                         thickness: 1,
-                    color: Colors.white.withOpacity(0.5),
-
+                        color: Colors.white.withOpacity(0.5),
                       ),
                       resultSummary(
-                          context: context,
-                          icon: Icons.radio_button_unchecked,
-                          iconColor: Colors.blue,
-                          valueReported: widget.notAttempted,
-                          total: widget.totalQuestion,
-                          category: 'Skipped',
-                          ),
+                        context: context,
+                        icon: Icons.radio_button_unchecked,
+                        iconColor: Colors.blue,
+                        valueReported: widget.notAttempted,
+                        total: widget.totalQuestion,
+                        category: 'Skipped',
+                      ),
                       VerticalDivider(
                         thickness: 1,
-                    color: Colors.white.withOpacity(0.5),
-
+                        color: Colors.white.withOpacity(0.5),
                       ),
                       resultSummary(
                           context: context,
@@ -122,40 +130,66 @@ class _ResultState extends State<Result> {
                   child: Divider(
                     thickness: 1,
                     color: Colors.white.withOpacity(0.5),
-
                   ),
                 ),
                 ListTile(
                     title: Text(
                       'Share Score',
-                      style: TextStyle(fontWeight: FontWeight.bold, color:Colors.white),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                     ),
-                    subtitle: Text('Share your result with your friends to let them know your score', style: TextStyle(color: Colors.white),),
+                    subtitle: Text(
+                      'Share your result with your friends to let them know your score',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     trailing: Icon(
                       Icons.share,
                       color: Colors.blue,
                     ),
                     onTap: () {
                       Share.share(
-                          "I scored ${widget.score} over ${widget.totalQuestion * 20} in the fun Sports Trivia App,\n Think you can do better? Join me ");
+                          "I scored ${widget.score} over ${widget.totalQuestion * 10} in the fun Sports Trivia App,\n Think you can do better? Join me ");
                     }),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Divider(
                     thickness: 1,
                     color: Colors.white.withOpacity(0.5),
+                  ),
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: ListTile(
+                        title: Text(
+                          'Score',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 20.0),
+                        ),
+                        subtitle: Text(
+                          '${widget.score}',
+                          style: TextStyle(color: Colors.white,fontSize: 20.0),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListTile(
+                        title: Text(
+                          'High Score',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 20.0),
+                        ),
+                        subtitle: Text(
+                          highScore,
+                          style: TextStyle(color: Colors.white,fontSize: 15.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
 
-                  ),
+                SizedBox(
+                  height: 8,
                 ),
-                ListTile(
-                  title: Text(
-                    'High Score',
-                    style: TextStyle(fontWeight: FontWeight.bold, color:Colors.white),
-                  ),
-                  subtitle: Text(highScore, style: TextStyle(color: Colors.white),),
-                ),
-                SizedBox(height: 8,),
-               
                 InkWell(
                   onTap: () {
                     Navigator.pushReplacement(
@@ -168,7 +202,8 @@ class _ResultState extends State<Result> {
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 54),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(24), border: Border.all(color: Colors.deepOrange, width: 2)),
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(color: Colors.deepOrange, width: 2)),
                       child: Text(
                         "Go home",
                         style: TextStyle(color: Colors.deepOrange),
@@ -204,14 +239,14 @@ class _ResultState extends State<Result> {
     );
   }
 
-  Widget resultSummary(
-      {@required BuildContext context,
-      @required IconData icon,
-      @required Color iconColor,
-      @required int valueReported,
-      @required int total,
-      @required String category,
-      }) {
+  Widget resultSummary({
+    @required BuildContext context,
+    @required IconData icon,
+    @required Color iconColor,
+    @required int valueReported,
+    @required int total,
+    @required String category,
+  }) {
     return Container(
       width: MediaQuery.of(context).size.width / 5,
       height: MediaQuery.of(context).size.width / 7,
@@ -232,13 +267,16 @@ class _ResultState extends State<Result> {
             right: 10,
             child: Text(
               ' $valueReported / $total',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color:Colors.white),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
             ),
           ),
           Positioned(
             left: 12,
             bottom: 8,
-            child: Text(category, style: TextStyle(color: Colors.white),),
+            child: Text(
+              category,
+              style: TextStyle(color: Colors.white),
+            ),
           )
         ],
       ),
@@ -249,14 +287,14 @@ class _ResultState extends State<Result> {
     final prefs = await SharedPreferences.getInstance();
     int currentHighScore = prefs.getInt('highScore');
     if (prefs.containsKey('highScore')) {
-      if (widget.score > currentHighScore) {
-        prefs.setInt('highScore', widget.score);
+      if (pointsScored > currentHighScore) {
+        prefs.setInt('highScore', pointsScored);
         _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text('Congratulations, new high score!'),
+          content: Text('Congratulations, new high score!'),
           elevation: 10.0,
         ));
         setState(() {
-          highScore = widget.score.toString();
+          highScore = pointsScored.toString();
         });
       } else {
         setState(() {
@@ -264,14 +302,14 @@ class _ResultState extends State<Result> {
         });
       }
     } else {
-      if (widget.score > 0) {
+      if (pointsScored > 0) {
         _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Congratulations, new high score!')));
-      }
 
-      prefs.setInt('highScore', widget.score);
-      setState(() {
-        highScore = '${widget.score}';
-      });
+        prefs.setInt('highScore', pointsScored);
+        setState(() {
+          highScore = '$pointsScored';
+        });
+      }
     }
   }
 
