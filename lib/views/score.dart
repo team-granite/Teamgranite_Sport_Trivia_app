@@ -247,6 +247,8 @@ class _ResultState extends State<Result> {
     @required int total,
     @required String category,
   }) {
+    int blockWidth = (MediaQuery.of(context).size.width / 100).floor();
+    int blockHeight = (MediaQuery.of(context).size.height / 100).floor();
     return Container(
       width: MediaQuery.of(context).size.width / 5,
       height: MediaQuery.of(context).size.width / 7,
@@ -273,9 +275,11 @@ class _ResultState extends State<Result> {
           Positioned(
             left: 12,
             bottom: 8,
-            child: Text(
-              category,
-              style: TextStyle(color: Colors.white),
+            child: Center(
+              child: Text(
+                category,
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           )
         ],

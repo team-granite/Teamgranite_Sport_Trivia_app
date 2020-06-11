@@ -5,6 +5,7 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:sport_trivia_app/model/questionModel.dart';
 import 'package:sport_trivia_app/views/score.dart';
+import 'package:quiver/async.dart';
 
 class QuizPlay extends StatefulWidget {
   @override
@@ -15,9 +16,32 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
   Animation animation;
   AnimationController animationController;
   static const String url = "https://opentdb.com/api.php?amount=10&category=21&type=boolean";
+  int countDownToZero = 0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int totalTime = 15;
+  bool isNetworkTimeOut = false;
 
   List<Results> _questions = [];
   var loading = false;
+
+  void startCountDownTimer() {
+    CountdownTimer timer = CountdownTimer(Duration(seconds: totalTime), Duration(seconds: 1),);
+    var subscription = timer.listen(null);
+    subscription.onData((data) {
+      setState(() {
+        countDownToZero = totalTime - data.elapsed.inSeconds;
+      });
+    });
+    subscription.onDone(() {
+      if (_questions.isEmpty) {
+        setState(() {
+          isNetworkTimeOut = true;
+        });
+      }
+      subscription.cancel();
+    });
+  }
+
 
   Future<Null> _fetchQuestions() async {
     setState(() {
@@ -35,12 +59,22 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
       setState(() {
         _questions = tempList;
         loading = false;
+        isNetworkTimeOut = false;
+      });
+      startAnim();
+    }
+    else{
+      setState(() {
+        isNetworkTimeOut = true;
       });
     }
   }
 
   int index = 0;
-  int correct = 0, incorrect = 0, notAttempted = 0, points = 0;
+  int correct = 0,
+      incorrect = 0,
+      notAttempted = 0,
+      points = 0;
   double beginAnim = 0.0;
   double endAnim = 1.0;
 
@@ -48,7 +82,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
   void initState() {
     super.initState();
     _fetchQuestions();
-
+    startCountDownTimer();
     animationController = AnimationController(duration: const Duration(seconds: 7), vsync: this)
       ..addListener(() {
         setState(() {});
@@ -56,7 +90,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
 
     animation = Tween(begin: beginAnim, end: endAnim).animate(animationController);
 
-    startAnim();
+    // startAnim();
 
     animationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
@@ -72,13 +106,14 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => Result(
-                  score: points,
-                  totalQuestion: _questions.length,
-                  correct: correct,
-                  incorrect: incorrect,
-                  notAttempted: notAttempted,
-                ),
+                builder: (context) =>
+                    Result(
+                      score: points,
+                      totalQuestion: _questions.length,
+                      correct: correct,
+                      incorrect: incorrect,
+                      notAttempted: notAttempted,
+                    ),
               ));
         }
       }
@@ -98,20 +133,21 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
   }
 
   bool isLastQuestion() {
-    return (_questions.length  == index);
+    return (_questions.length == index);
   }
 
   void goToResult() {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => Result(
-            score: points,
-            totalQuestion: _questions.length,
-            correct: correct,
-            incorrect: incorrect,
-            notAttempted: notAttempted,
-          ),
+          builder: (context) =>
+              Result(
+                score: points,
+                totalQuestion: _questions.length,
+                correct: correct,
+                incorrect: incorrect,
+                notAttempted: notAttempted,
+              ),
         ));
   }
 
@@ -119,6 +155,7 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: RichText(
             text: TextSpan(
@@ -151,169 +188,188 @@ class _QuizPlayState extends State<QuizPlay> with SingleTickerProviderStateMixin
           padding: EdgeInsets.symmetric(vertical: 50, horizontal: 15.0),
           child: _questions.isNotEmpty
               ?
-              LayoutBuilder(builder: (context, constraints){
-                return SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
-                    child: IntrinsicHeight(
-                      child: (!isLastQuestion()) ? Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                              Text("${index + 1}/${_questions.length}",
-                                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text("Question",
-                                  style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400)),
-                              Spacer(),
-                              Text("$points",
-                                  style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                width: 8,
-                              ),
-                              Text("Points",
-                                  style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400)),
-                            ]),
-                          ),
+          LayoutBuilder(builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: (!isLastQuestion()) ? Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                          Text("${index + 1}/${_questions.length}",
+                              style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
                           SizedBox(
-                            height: 40,
+                            width: 8,
                           ),
-                          LinearProgressIndicator(
-                            value: animation.value,
-                            backgroundColor: Color(0xFFFF5722),
+                          Text("Question",
+                              style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400)),
+                          Spacer(),
+                          Text("$points",
+                              style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            width: 8,
                           ),
-                          Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text('${getQuestion(_questions[index].question)}?',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 25.0,
-                                  )),
-                            ),
-                          Spacer(),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 30),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      if (_questions[index].correct_answer == "True") {
-                                        setState(() {
-                                          points += 10;
-                                          correct++;
-                                        });
-                                        index++;
-
-                                        if (isLastQuestion()) {
-                                          stopAnim();
-                                          goToResult();
-                                        } else {
-                                          resetAnim();
-                                          startAnim();
-                                        }
-                                      } else {
-                                        setState(() {
-                                          points = points - 5;
-                                          incorrect++;
-                                        });
-                                        index++;
-
-                                        if (isLastQuestion()) {
-                                          stopAnim();
-                                          goToResult();
-                                        } else {
-                                          resetAnim();
-                                          startAnim();
-                                        }
-                                      }
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 15),
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "True",
-                                        style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500),
-                                      ),
-                                      decoration:
-                                      BoxDecoration(borderRadius: BorderRadius.circular(24), color: Colors.blue),
-                                    )),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    if (_questions[index].correct_answer == "False") {
-                                      setState(() {
-                                        points += 10;
-                                        correct++;
-                                      });
-                                      index++;
-
-                                      if (isLastQuestion()) {
-                                        stopAnim();
-                                        goToResult();
-                                      } else {
-                                        resetAnim();
-                                        startAnim();
-                                      }
-                                    } else {
-                                      setState(() {
-                                        points = points - 5;
-                                        incorrect++;
-                                      });
-                                      index++;
-
-                                      if (isLastQuestion()) {
-                                        stopAnim();
-                                        goToResult();
-                                      } else {
-                                        resetAnim();
-                                        startAnim();
-                                      }
-                                    }
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 12),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "False",
-                                      style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500),
-                                    ),
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), color: Colors.red),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ) : Center( child: Text(' '),),
-                    ),
-                  ),
-                );
-              })
-
-
-              : Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator(),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          'Loading questions...',
-                          style: TextStyle(color: Colors.white, fontSize: 22.0),
-                        ),
+                          Text("Points",
+                              style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w400)),
+                        ]),
                       ),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      LinearProgressIndicator(
+                        value: animation.value,
+                        backgroundColor: Color(0xFFFF5722),
+                      ),
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text('${getQuestion(_questions[index].question)}?',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 25.0,
+                            )),
+                      ),
+                      Spacer(),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 30),
+                        child: Column(
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  if (_questions[index].correct_answer == "True") {
+                                    setState(() {
+                                      points += 10;
+                                      correct++;
+                                    });
+                                    index++;
+
+                                    if (isLastQuestion()) {
+                                      stopAnim();
+                                      goToResult();
+                                    } else {
+                                      resetAnim();
+                                      startAnim();
+                                    }
+                                  } else {
+                                    setState(() {
+                                      points = points - 5;
+                                      incorrect++;
+                                    });
+                                    index++;
+
+                                    if (isLastQuestion()) {
+                                      stopAnim();
+                                      goToResult();
+                                    } else {
+                                      resetAnim();
+                                      startAnim();
+                                    }
+                                  }
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 15),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "True",
+                                    style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500),
+                                  ),
+                                  decoration:
+                                  BoxDecoration(borderRadius: BorderRadius.circular(24), color: Colors.blue),
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                if (_questions[index].correct_answer == "False") {
+                                  setState(() {
+                                    points += 10;
+                                    correct++;
+                                  });
+                                  index++;
+
+                                  if (isLastQuestion()) {
+                                    stopAnim();
+                                    goToResult();
+                                  } else {
+                                    resetAnim();
+                                    startAnim();
+                                  }
+                                } else {
+                                  setState(() {
+                                    points = points - 5;
+                                    incorrect++;
+                                  });
+                                  index++;
+
+                                  if (isLastQuestion()) {
+                                    stopAnim();
+                                    goToResult();
+                                  } else {
+                                    resetAnim();
+                                    startAnim();
+                                  }
+                                }
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 12),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "False",
+                                  style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w500),
+                                ),
+                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
+                  ) : Center(child: Text(' '),),
+                ),
+              ),
+            );
+          })
+              : Center(
+            child: isNetworkTimeOut ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Connection to server timed out.',
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),textAlign: TextAlign.center,
                   ),
                 ),
+                RaisedButton(
+                  child: Text('Reload'),
+                  onPressed: () {
+                    setState(() {
+                      isNetworkTimeOut = false;
+                    });
+                    _fetchQuestions();
+                    startCountDownTimer();
+                  },
+                ),
+              ],
+            ): Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Loading questions...',
+                    style: TextStyle(color: Colors.white, fontSize: 22.0),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
