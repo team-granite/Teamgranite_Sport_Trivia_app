@@ -147,7 +147,7 @@ class _ResultState extends State<Result> {
                     ),
                     onTap: () {
                       Share.share(
-                          "I scored ${widget.score} over ${widget.totalQuestion * 20} in the fun Sports Trivia App,\n Think you can do better? Join me ");
+                          "I scored ${widget.score} over ${widget.totalQuestion * 10} in the fun Sports Trivia App,\n Think you can do better? Join me ");
                     }),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -156,16 +156,37 @@ class _ResultState extends State<Result> {
                     color: Colors.white.withOpacity(0.5),
                   ),
                 ),
-                ListTile(
-                  title: Text(
-                    'High Score',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  subtitle: Text(
-                    highScore,
-                    style: TextStyle(color: Colors.white),
-                  ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: ListTile(
+                        title: Text(
+                          'Score',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 20.0),
+                        ),
+                        subtitle: Text(
+                          '${widget.score}',
+                          style: TextStyle(color: Colors.white,fontSize: 20.0),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListTile(
+                        title: Text(
+                          'High Score',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white,fontSize: 20.0),
+                        ),
+                        subtitle: Text(
+                          highScore,
+                          style: TextStyle(color: Colors.white,fontSize: 15.0),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+
                 SizedBox(
                   height: 8,
                 ),
