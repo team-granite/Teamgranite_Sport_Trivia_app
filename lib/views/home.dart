@@ -99,8 +99,7 @@ void _displayDialog(context,title,text) {
           actions: <Widget>[
             FlatButton.icon(
                 onPressed: (){
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                  Navigator.pop(context);
                 },
                 icon: Icon(
                   Icons.refresh,
