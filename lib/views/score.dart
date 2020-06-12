@@ -20,6 +20,7 @@ class _ResultState extends State<Result> {
   double percentageInDecimal;
   String highScore = '';
   int pointsScored = 0;
+  String playStoreLink = 'https://play.google.com/store/apps/details?id=com.hnginternship.sport_trivia';
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -147,7 +148,7 @@ class _ResultState extends State<Result> {
                     ),
                     onTap: () {
                       Share.share(
-                          "I scored ${widget.score} over ${widget.totalQuestion * 10} in the fun Sports Trivia App,\n Think you can do better? Join me ");
+                          "I scored $pointsScored over ${widget.totalQuestion * 10} in the fun Sports Trivia App,\n Think you can do better? Join me \n$playStoreLink");
                     }),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
